@@ -1,11 +1,10 @@
 package bg.softuni.zooarchitectrest.util;
 
-import bg.softuni.zooarchitectrest.model.dto.weather.Root;
-import bg.softuni.zooarchitectrest.model.dto.weather.WeatherCodeEnum;
+import bg.softuni.zooarchitectrest.model.weather.Root;
+import bg.softuni.zooarchitectrest.model.weather.WeatherCodeEnum;
 import bg.softuni.zooarchitectrest.model.entity.Habitat;
 import bg.softuni.zooarchitectrest.repository.HabitatRepository;
 import bg.softuni.zooarchitectrest.service.HabitatService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.MediaType;
@@ -14,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @EnableScheduling
@@ -28,13 +28,12 @@ public class SchedulingTasksApplication {
         this.habitatRepository = habitatRepository;
     }
 
-    @Scheduled(fixedRate = 10000)
-    @Transactional
+    @Scheduled(fixedRate = 1, timeUnit = TimeUnit.HOURS)
     public void updateHabitatWeather() {
         List<Habitat> habitats = habitatService.getAll();
-        for (Habitat habitat : habitats) {
+        habitats.forEach(habitat -> {
             Root root = weatherRestClient.get()
-                    .uri(uriBuilder ->  uriBuilder
+                    .uri(uriBuilder -> uriBuilder
                             .path("/forecast")
                             .queryParam("latitude", habitat.getLatitude())
                             .queryParam("longitude", habitat.getLongitude())
@@ -47,7 +46,6 @@ public class SchedulingTasksApplication {
             habitat.setTemperature(root.getCurrent().getTemperature_2m());
             habitat.setWeatherCondition(WeatherCodeEnum.fromCode(root.getCurrent().getWeather_code()));
             habitatRepository.save(habitat);
-            System.out.println(root.getCurrent().getTemperature_2m());
-        }
+        });
     }
 }

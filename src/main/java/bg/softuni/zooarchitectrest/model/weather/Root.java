@@ -1,4 +1,4 @@
-package bg.softuni.zooarchitectrest.model.dto.weather;
+package bg.softuni.zooarchitectrest.model.weather;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

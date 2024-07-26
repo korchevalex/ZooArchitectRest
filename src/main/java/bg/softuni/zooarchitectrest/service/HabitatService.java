@@ -35,4 +35,8 @@ public class HabitatService {
     public void deleteHabitat(Long id) {
         habitatRepository.deleteById(id);
     }
+
+    public void deleteAll() {
+        habitatRepository.deleteAll();
+    }
 }

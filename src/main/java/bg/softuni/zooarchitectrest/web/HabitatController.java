@@ -78,4 +78,10 @@ public class HabitatController {
                 habitatService.getAll()
         );
     }
+
+    @DeleteMapping
+    public ResponseEntity<Habitat> deleteAllHabitats() {
+        habitatService.deleteAll();
+        return ResponseEntity.noContent().build();
+    }
 }
