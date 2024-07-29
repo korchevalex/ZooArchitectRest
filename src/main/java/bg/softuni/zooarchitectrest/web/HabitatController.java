@@ -3,10 +3,12 @@ package bg.softuni.zooarchitectrest.web;
 import bg.softuni.zooarchitectrest.model.dto.HabitatCreationDTO;
 import bg.softuni.zooarchitectrest.model.entity.Habitat;
 import bg.softuni.zooarchitectrest.service.HabitatService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/habitats")
+
 public class HabitatController {
     private final HabitatService habitatService;
 
@@ -43,12 +46,22 @@ public class HabitatController {
                     )
             }
     )
+    @Operation(
+            security = @SecurityRequirement(
+                    name = "bearer-token"
+            )
+    )
     @GetMapping("/{id}")
     public ResponseEntity<Habitat> getById(@PathVariable("id") Long id) {
         return ResponseEntity
                 .ok(habitatService.getHabitatById(id));
     }
 
+    @Operation(
+            security = @SecurityRequirement(
+                    name = "bearer-token"
+            )
+    )
     @DeleteMapping("/{id}")
     public ResponseEntity<Habitat> deleteById(@PathVariable("id") Long id) {
         habitatService.deleteHabitat(id);
@@ -57,6 +70,11 @@ public class HabitatController {
                 .build();
     }
 
+    @Operation(
+            security = @SecurityRequirement(
+                    name = "bearer-token"
+            )
+    )
     @PostMapping("/create")
     public ResponseEntity<Habitat> createOffer(
             @RequestBody HabitatCreationDTO habitatCreationDTO
@@ -72,6 +90,11 @@ public class HabitatController {
                 ).body(habitat);
     }
 
+    @Operation(
+            security = @SecurityRequirement(
+                    name = "bearer-token"
+            )
+    )
     @GetMapping
     public ResponseEntity<List<Habitat>> getAllHabitats() {
         return ResponseEntity.ok(
@@ -79,6 +102,11 @@ public class HabitatController {
         );
     }
 
+    @Operation(
+            security = @SecurityRequirement(
+                    name = "bearer-token"
+            )
+    )
     @DeleteMapping
     public ResponseEntity<Habitat> deleteAllHabitats() {
         habitatService.deleteAll();

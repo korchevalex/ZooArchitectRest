@@ -21,6 +21,10 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.orm.jdbc.bind: TRACE
+
 weather:
   api:
     base-url: https://api.open-meteo.com/v1
+
+jwt:
+  secret: ${JWT_KEY:$2a$12$rJjJdUgI1NT7EQorqQfmR.EtLq7SDOM2cutE0Z5/9SX9tttd5il2W$2a$12$rJjJdUgI1NT7EQorqQfmR.EtLq7SDOM2cutE0Z5/9SX9tttd5il2W}
