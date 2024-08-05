@@ -22,6 +22,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.jwtService = jwtService;
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
